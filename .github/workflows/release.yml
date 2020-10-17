@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby 2.5.3
+      - name: Set up Ruby 2.5
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
@@ -33,13 +33,13 @@ jobs:
     needs: verify
     strategy:
       matrix:
-        ruby-version: [2.5.3]
+        ruby-version: [2.5]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby 2.5.3
+      - name: Set up Ruby 2.5
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
