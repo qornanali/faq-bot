@@ -1,0 +1,48 @@
+on: [push, pull_request]
+name: check_quality
+jobs:
+  verify:
+    strategy:
+      matrix:
+        ruby-version: [2.5]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby 2.5.3
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+      - name: Install dependencies
+        working-directory: src
+        run: |
+          gem install bundler
+          bundle config set path 'vendor/bundle'
+          bundle install --jobs 4 --retry 3
+          cp config/application.yml.sample config/application.yml
+      - name: Setup database test
+        working-directory: src
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:migrate
+      - name: Test using rspec
+        run: |
+          bundle exec rspec -fd
+  deploy:
+    needs: verify
+    strategy:
+      matrix:
+        ruby-version: [2.5.3]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby 2.5.3
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+      - name: Deploy to Heroku
+        run: |
+          gem install dpl
+          dpl --provider=heroku --app=${{ secrets.HEROKU_PRODUCTION_APP }} --api-key=${{ secrets.HEROKU_API_KEY }}
