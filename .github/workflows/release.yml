@@ -14,19 +14,16 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
       - name: Install dependencies
-        working-directory: src
         run: |
           gem install bundler
           bundle config set path 'vendor/bundle'
           bundle install --jobs 4 --retry 3
           cp config/application.yml.sample config/application.yml
       - name: Setup database test
-        working-directory: src
         run: |
           bundle exec rails db:create
           bundle exec rails db:migrate
       - name: Test using rspec
-        working-directory: src
         run: |
           bundle exec rspec -fd
   deploy:
