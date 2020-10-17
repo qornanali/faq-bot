@@ -26,6 +26,7 @@ jobs:
           bundle exec rails db:create
           bundle exec rails db:migrate
       - name: Test using rspec
+        working-directory: src
         run: |
           bundle exec rspec -fd
   deploy:
