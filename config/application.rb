@@ -14,6 +14,5 @@ module FaqBotMig
   class Application < Rails::Application
     config.load_defaults 6.0
     config.api_only = true
-    config.hosts << '879d2e01ee3f.ngrok.io'
   end
 end

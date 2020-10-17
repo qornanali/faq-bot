@@ -1,19 +1,20 @@
-DATABASE_NAME: 'faq-bot-db'
+DATABASE_NAME: "faq-bot-db"
 
 test:
   MESSENGER_ACCESS_TOKEN: "foo"
   MESSENGER_VERIFICATION_TOKEN: "bar"
   UNKNOWN_ANSWER: "Sorry, I don't know the answer for that question"
   FACEBOOK_GRAPH_HOST: "http://localhost"
-  DATABASE_USERNAME: 'faq-bot-user'
-  DATABASE_PASSWORD: 'faq-bot-pass'
-  DATABASE_HOST: 'localhost'
+  DATABASE_USERNAME: "faq-bot-user"
+  DATABASE_PASSWORD: "faq-bot-pass"
+  DATABASE_HOST: "localhost"
 
 development:
   MESSENGER_ACCESS_TOKEN: "foo"
   MESSENGER_VERIFICATION_TOKEN: "bar"
   UNKNOWN_ANSWER: "Sorry, I don't know the answer for that question"
   FACEBOOK_GRAPH_HOST: "http://localhost"
-  DATABASE_USERNAME: 'faq-bot-user'
-  DATABASE_PASSWORD: 'faq-bot-pass'
-  DATABASE_HOST: 'localhost'
+  DATABASE_USERNAME: "faq-bot-user"
+  DATABASE_PASSWORD: "faq-bot-pass"
+  DATABASE_HOST: "localhost"
+  ALLOWED_HOSTS: "127.0.0.1,127.0.0.2"
