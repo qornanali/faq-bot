@@ -1,0 +1,16 @@
+.bundle
+vendor/
+
+db/*.sqlite3
+db/*.sqlite3-journal
+db/*.sqlite3-*
+
+log/*
+tmp/*
+!log/.keep
+!tmp/.keep
+
+.byebug_history
+
+config/master.key
+config/application.yml

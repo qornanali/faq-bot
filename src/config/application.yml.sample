@@ -1,0 +1,11 @@
+test:
+  MESSENGER_ACCESS_TOKEN: "foo"
+  MESSENGER_VERIFICATION_TOKEN: "bar"
+  UNKNOWN_ANSWER: "Sorry, I don't know the answer for that question"
+  FACEBOOK_GRAPH_HOST: "http://localhost"
+
+development:
+  MESSENGER_ACCESS_TOKEN: "foo"
+  MESSENGER_VERIFICATION_TOKEN: "bar"
+  UNKNOWN_ANSWER: "Sorry, I don't know the answer for that question"
+  FACEBOOK_GRAPH_HOST: "http://localhost"
