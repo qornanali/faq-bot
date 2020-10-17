@@ -34,7 +34,7 @@ class WebhooksController < ApplicationController
 
     def send_message(sender_id, text)
       access_token = Figaro.env.MESSENGER_ACCESS_TOKEN
-      request_url = URI("#{FACEBOOK_GRAPH_HOST}/v2.6/me/messages?access_token=#{access_token}")
+      request_url = URI("#{Figaro.env.FACEBOOK_GRAPH_HOST}/v2.6/me/messages?access_token=#{access_token}")
       request_body = {
         recipient: {
           id: sender_id
