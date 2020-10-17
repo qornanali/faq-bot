@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:11-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=faq-bot-db-development
+      - POSTGRES_USER=faq-bot-user
+      - POSTGRES_PASSWORD=faq-bot-pass

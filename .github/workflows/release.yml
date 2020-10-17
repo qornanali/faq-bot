@@ -2,6 +2,19 @@ on: [push, pull_request]
 name: release
 jobs:
   verify:
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: faq-bot-user
+          POSTGRES_DB: faq-bot-db-test
+          POSTGRES_PASSWORD: faq-bot-pass
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     strategy:
       matrix:
         ruby-version: [2.5]
@@ -18,11 +31,10 @@ jobs:
           gem install bundler
           bundle config set path 'vendor/bundle'
           bundle install --jobs 4 --retry 3
-          cp config/application.yml.sample config/application.yml
       - name: Setup database test
         run: |
-          bundle exec rails db:create
-          bundle exec rails db:migrate
+          cp config/application.yml.sample config/application.yml
+          bundle exec rails db:create db:migrate
       - name: Test using rspec
         run: |
           bundle exec rspec -fd
