@@ -11,8 +11,9 @@ class Question
     message = messaging['message']
     sender_id = messaging['sender']['id']
     text = message['text']
-    intents = message['nlp']['intents'].sort_by { |item| -item['confidence'].to_f }
-    intent = intents.first['name'] unless intents.empty?
+    selected_intents = message['nlp']['intents'].select { |item| item['confidence'].to_f > 0.5 }
+    sorted_intents = selected_intents.sort_by { |item| -item['confidence'].to_f }
+    intent = sorted_intents.first['name'] unless sorted_intents.empty?
     new(sender_id, text, intent)
   end
 end
