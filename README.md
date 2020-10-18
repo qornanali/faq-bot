@@ -5,12 +5,7 @@
 FAQ-bot adalah bot messenger yang membantu pagemu menjawab pertanyaan-pertanyaan yang sering dilontarkan oleh pengguna.
 
 Bot ini dibuat untuk mengikuti [Facebook developer circle community challenge 2020](https://developercircles2020.devpost.com/). Isi dari botnya dirancang agar menjawab pertanyaan-pertanyaan yang sering dilontarkan tentang challenge tersebut.
-
 Kamu bisa mencobanya di: [https://m.me/askmeforfaq](m.me/askmeforfaq)
-Bot ini masih dalam tahap development, jika kamu ingin mencoba bisa menggunakan akun berikut pada messenger:
-Email : open_edbhdfp_user@tfbnw.net
-password : test-user 
-
 
 ### Daftar Tutorial
 
