@@ -15,8 +15,8 @@ Kamu bisa mencobanya di: [https://m.me/askmeforfaq](m.me/askmeforfaq)
 
 # Author
 
-[Ali Qornan](github.com/qornanali)
+[Ali Qornan](https://github.com/qornanali)
 
 📌 Bandung, Indonesia
 
-[Linkedin](linkedin.com/in/aliqornan) | [Blog](medium.com/@aliqornan97)
+[Linkedin](https://linkedin.com/in/aliqornan) | [Blog](https://medium.com/@aliqornan97)
