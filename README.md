@@ -13,6 +13,20 @@ Kamu bisa mencobanya di: [https://m.me/askmeforfaq](https://m.me/askmeforfaq)
 
 2. [Cara menggunakan (kontribusi, menjalankan, dll).](docs/id/cara-menggunakan.md)
 
+
+## EN English Version
+
+FAQ-bot is bot messenger that helps your page to answer frequently asked questions (FAQ) by user.
+
+This bot is made to join [Facebook developer circle community challenge 2020](https://developercircles2020.devpost.com/). The contents is designed to answer the freqeuently asked questions (FAQ) about Facebook developer circle community challenge 2020.
+
+Try Faq-bot through this link : [https://m.me/askmeforfaq](https://m.me/askmeforfaq)
+
+### Tutorial
+1. [How to create FAQ-bot step by step](docs/en/how-to-make-faq-bot.md)
+
+2. [How to use (contribute, running, etc).](docs/en/how-to-use.md)
+
 # Author
 
 [Ali Qornan](https://github.com/qornanali)
