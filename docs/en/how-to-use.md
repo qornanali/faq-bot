@@ -2,15 +2,15 @@
 
 **Table of contents**
 
-* [Getting started with project](#getting-started)
-  + [Prerequisite](#prerequisite)
-  + [Setup project](#setup-project)
-  + [Running server on local](#running-server-on-local)
-* [In Development process](#in-development-process)
-  + [Check specifications](#check-specifications)
-* [How to contribute](#how-to-contribute)
+- [Getting started with the project](#getting-started-with-the-project)
+  * [Prerequisite](#prerequisite)
+  * [Setup project](#setup-project)
+  * [Running server on local](#running-server-on-local)
+- [In Development process](#in-development-process)
+  * [Specifications check](#specifications-check)
+- [How to contribute](#how-to-contribute)
 
-## Getting started with project
+## Getting started with the project
 
 ### Prerequisite
 
@@ -20,7 +20,7 @@
 
 3. Bundler ~> 2.1.4
 
-To install, open terminal/command-line then run the following :
+To install, open terminal/command-line then run the following:
 
 ```console
 $ gem install bundle -v 2.0.2
@@ -43,13 +43,13 @@ You can leave it or fill it as you like.
 
 2. Set container
 
-Open terminal / command-line at project directory, then run :
+Open terminal / command-line at project directory, then run:
 
 ```console
 $ docker-compose up -d
 ```
 
-If you want to turn off container, run :
+If you want to turn off the container, run:
 
 ```console
 $ docker-compose down --volumes
@@ -57,7 +57,7 @@ $ docker-compose down --volumes
 
 3. Create database
 
-Open terminal/command-line at project directory, then run : 
+Open terminal/command-line at project directory, then run: 
 
 ```console
 $ bin/rails db:create
@@ -70,11 +70,11 @@ $ RAILS_ENV=test bin/rails db:migrate
 $ RAILS_ENV=development bin/rails db:migrate
 ```
 
-4. Installation dependencies-dependencies
+4. Installation dependency-dependency
 
 **Rubygems Installation**
 
-Buka terminal/cmd di direktori proyeknya lalu jalankan:
+Open terminal / command-line at project directory, then run the following command:
 
 ```console
 $ bundle set config path vendor/bundle
@@ -83,7 +83,7 @@ $ bundle install
 
 ### Running server on local
 
-Open terminal/command-line at project directory then run the following :
+Open terminal/command-line at project directory then run the following:
 
 ```console
 $ bin/rails s
@@ -98,15 +98,15 @@ To maintain the code quality, run the following instructions everytime before se
 ### Specifications check
 
 To make sure, your changes did not disrupt anything, try _unit-test_
-We'll call it as `spec` in this project .
+We'll call it as `spec` in this project.
 
-Open terminal / command-line at project directory then run the following :
+Open terminal / command-line at project directory then run the following:
 
 ```console
 $ bundle exec rspec
 ```
 
-Make sure your changes did not decrease the percentage of _code-coverage_ .
+Make sure your changes did not decrease the percentage of _code-coverage_.
 
 ## How to contribute
 
