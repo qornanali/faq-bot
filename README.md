@@ -14,7 +14,7 @@ Kamu bisa mencobanya di: [https://m.me/askmeforfaq](https://m.me/askmeforfaq)
 2. [Cara menggunakan (kontribusi, menjalankan, dll).](docs/id/cara-menggunakan.md)
 
 
-## EN English Version
+## :gb: English Version
 
 FAQ-bot is bot messenger that helps your page to answer frequently asked questions (FAQ) by user.
 
@@ -30,6 +30,7 @@ Try Faq-bot through this link : [https://m.me/askmeforfaq](https://m.me/askmefor
 # Author
 
 [Ali Qornan](https://github.com/qornanali)
+[Muhammad Jafar](https://github.com/mhmmdjafarg)
 
 📌 Bandung, Indonesia
 
