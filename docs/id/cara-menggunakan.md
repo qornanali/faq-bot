@@ -23,7 +23,7 @@
 Untuk cara instalasinya, buka terminal/cmd lalu jalankan:
 
 ```console
-$ gem install bundle -v 2.0.2
+$ gem install bundler -v 2.0.2
 ```
 
 ### Menyiapkan proyek
