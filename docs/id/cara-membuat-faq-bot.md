@@ -35,28 +35,33 @@ Kemudian maksud ini kita olah untuk dapat memberikan jawaban yang sesuai.
 
 ## Daftar Isi
 
-  * [Pengantar](#pengantar)
-    + [Mengapa kita butuh bot ini? 🤔](#mengapa-kita-butuh-bot-ini----)
-    + [Lalu apa solusinya? 🙋‍♂️](#lalu-apa-solusinya-------)
-  * [Daftar Isi](#daftar-isi)
-  * [Menganalisa aplikasi yang akan kita buat](#menganalisa-aplikasi-yang-akan-kita-buat)
-    + [Mendefinisikan ruang lingkup 🔍](#mendefinisikan-ruang-lingkup---)
-    + [Mencari tahu teknologi yang dibutuhkan 💻](#mencari-tahu-teknologi-yang-dibutuhkan---)
-      - [Membuat messenger app](#membuat-messenger-app)
-      - [Melatih AI agar dapat memahami pembicaraan](#melatih-ai-agar-dapat-memahami-pembicaraan)
-      - [Kesimpulan](#kesimpulan)
-    + [Prasyarat 📦](#prasyarat---)
-  * [Saatnya pengembangan aplikasi!](#saatnya-pengembangan-aplikasi-)
-    + [Inisialisasi proyek 🧘‍♂️](#inisialisasi-proyek------)
-      - [Membuat proyek baru rails](#membuat-proyek-baru-rails)
-      - [Menyiapkan database PostgreSQL](#menyiapkan-database-postgresql)
-      - [Menjalankan web server](#menjalankan-web-server)
-    + [Membuat webhook 🕸](#membuat-webhook---)
-      - [Menambahkan `/webhook` ke route](#menambahkan---webhook--ke-route)
-      - [Membuat `GET /webhook` untuk verifikasi token](#membuat--get--webhook--untuk-verifikasi-token)
-      - [Membuat `POST /webhook` untuk menerima event](#membuat--post--webhook--untuk-menerima-event)
-      - [Memeriksa webhook](#memeriksa-webhook)
-  * [Referensi](#referensi)
+* [Pengantar](#pengantar)
+  + [Mengapa kita butuh bot ini? 🤔](#mengapa-kita-butuh-bot-ini----)
+  + [Lalu apa solusinya? 🙋‍♂️](#lalu-apa-solusinya-------)
+* [Daftar Isi](#daftar-isi)
+* [Menganalisa aplikasi yang akan kita buat](#menganalisa-aplikasi-yang-akan-kita-buat)
+  + [Mendefinisikan ruang lingkup 🔍](#mendefinisikan-ruang-lingkup---)
+  + [Mencari tahu teknologi yang dibutuhkan 💻](#mencari-tahu-teknologi-yang-dibutuhkan---)
+    - [Membuat messenger app](#membuat-messenger-app)
+    - [Melatih AI agar dapat memahami pembicaraan](#melatih-ai-agar-dapat-memahami-pembicaraan)
+  + [Kesimpulan](#kesimpulan)
+    - [Facebook melakukan verifikasi webhook](#facebook-melakukan-verifikasi-webhook)
+    - [Aplikasi menerima pertanyaan dari customer](#aplikasi-menerima-pertanyaan-dari-customer)
+    - [Aplikasi mengirim jawaban ke customer](#aplikasi-mengirim-jawaban-ke-customer)
+  + [Prasyarat 📦](#prasyarat---)
+* [Saatnya pengembangan aplikasi!](#saatnya-pengembangan-aplikasi-)
+  + [Inisialisasi proyek 🧘‍♂️](#inisialisasi-proyek------)
+    - [Membuat proyek baru rails](#membuat-proyek-baru-rails)
+    - [Menyiapkan database PostgreSQL](#menyiapkan-database-postgresql)
+    - [Menjalankan web server](#menjalankan-web-server)
+  + [Membuat webhook 🕸](#membuat-webhook---)
+    - [Menambahkan `/webhook` ke route](#menambahkan---webhook--ke-route)
+    - [Membuat `GET /webhook` untuk verifikasi token](#membuat--get--webhook--untuk-verifikasi-token)
+    - [Membuat `POST /webhook` untuk menerima event](#membuat--post--webhook--untuk-menerima-event)
+    - [Memeriksa webhook](#memeriksa-webhook)
+* [Referensi](#referensi)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## Menganalisa aplikasi yang akan kita buat
 
@@ -97,7 +102,7 @@ lalu kita tentukan dari setiap sampel pertanyaan tersebut, apa "maksud" dari cus
 Untuk memahami caranya, kita bisa langsung masuk ke tutorial singkat
 dari wit.ai di link berikut https://wit.ai/docs/quickstart.
 
-#### Kesimpulan
+### Kesimpulan
 
 Setelah melakukan spike-spike di atas, berikut ini adalah diagram dari spesifikasi
 teknologi yang akan kita gunakan. Diagram ini dibuat sesimpel mungkin jadi mungkin
@@ -115,7 +120,7 @@ Kebutuhan dari webhooknya adalah:
 
 - Port terbuka yang dapat menerima request `POST` dan `GET`.
 
-**Facebook melakukan verifikasi webhook**
+#### Facebook melakukan verifikasi webhook
 
 ![Setup webhook](../assets/set-webhook-diagram.png)
 
@@ -123,14 +128,14 @@ Kita harus menyimpan url webhook yang telah kita siapkan ke pengaturan di Facebo
 Saat kita menyimpan, Facebook akan mengirimkan request `GET` yang berisi
 proses verifikasi untuk memastikan kebutuhan webhooknya terpenuhi.
 
-**Aplikasi menerima pertanyaan dari customer**
+#### Aplikasi menerima pertanyaan dari customer
 
 ![Customer sends a question](../assets/send-question-diagram.png)
 
 Facebook akan mengirimkan `POST` request ke url webhook yang telah kita simpan di pengaturan.
 Request ini berisikan informasi berisi ID dari pengirim pesan, teks pesan, waktu dikirim, dan lain-lain.
 
-**Aplikasi mengirim jawaban ke customer**
+#### Aplikasi mengirim jawaban ke customer
 
 ![Customer receives an answer](../assets/receive-answer-diagram.png)
 
