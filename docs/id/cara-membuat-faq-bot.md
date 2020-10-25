@@ -61,12 +61,12 @@ Kemudian maksud ini kita olah untuk dapat memberikan jawaban yang sesuai.
     - [Memeriksa webhook](#memeriksa-webhook)
     - [Mencoba webhook di Facebook app](#mencoba-webhook-di-facebook-app)
   + [Membalas pesan ke customer 💬](#membalas-pesan-ke-customer---)
+    - [Mendapatkan akses token dari Facebook page](#mendapatkan-akses-token-dari-facebook-page)
     - [Tambahkan gem Faraday](#tambahkan-gem-faraday)
     - [Modifikasi fungsi create](#modifikasi-fungsi-create)
 * [Referensi](#referensi)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 ## Menganalisa aplikasi yang akan kita buat
 
@@ -467,6 +467,18 @@ dengan mengirimkan pesan ke page Facebook yang sudah kamu pilih.
 
 ### Membalas pesan ke customer 💬
 
+#### Mendapatkan akses token dari Facebook page
+
+1. Buka laman pengaturan dari aplikasi Facebook yang pernah kamu buat.
+
+2. Masuk ke bagian `messenger > settings > webhooks`
+
+![Mendapatkan access token](../assets/get-access-token-from-page.png)
+
+3. Dapatkan token dari bagian `access tokens`
+
+> :warning: Berhati-hatilah dengan token ini. Jangan bagikan ke siapapun kecuali kamu mempercayainya.
+
 #### Tambahkan gem Faraday
 
 Faraday adalah salah satu gem yang berfungsi sebagai HTTP client.
@@ -515,7 +527,7 @@ class WebhooksController < ApplicationController
   private
 
     def send_message(recipient_id, text)
-      access_token = '<put your page access token>' # Be careful with this token. Don't share it to others unless you trust them.
+      access_token = '<put your page access token>'
       request_url = URI("https://graph.facebook.com/v2.6/me/messages?access_token=#{access_token}")
       request_body = {
         recipient: {
