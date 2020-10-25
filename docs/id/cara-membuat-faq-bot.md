@@ -48,7 +48,14 @@ Kemudian maksud ini kita olah untuk dapat memberikan jawaban yang sesuai.
     + [Prasyarat 📦](#prasyarat---)
   * [Saatnya pengembangan aplikasi!](#saatnya-pengembangan-aplikasi-)
     + [Inisialisasi proyek 🧘‍♂️](#inisialisasi-proyek------)
+      - [Membuat proyek baru rails](#membuat-proyek-baru-rails)
+      - [Menyiapkan database PostgreSQL](#menyiapkan-database-postgresql)
+      - [Menjalankan web server](#menjalankan-web-server)
     + [Membuat webhook 🕸](#membuat-webhook---)
+      - [Menambahkan `/webhook` ke route](#menambahkan---webhook--ke-route)
+      - [Membuat `GET /webhook` untuk verifikasi token](#membuat--get--webhook--untuk-verifikasi-token)
+      - [Membuat `POST /webhook` untuk menerima event](#membuat--post--webhook--untuk-menerima-event)
+      - [Memeriksa webhook](#memeriksa-webhook)
   * [Referensi](#referensi)
 
 ## Menganalisa aplikasi yang akan kita buat
@@ -210,7 +217,7 @@ panduan setup-nya di https://dashboard.ngrok.com/get-started/setup.
 
 ### Inisialisasi proyek 🧘‍♂️
 
-**1. Membuat proyek baru rails**
+#### Membuat proyek baru rails
 
 Buka terminal/cmd, masuk ke direktori yang kamu inginkan lalu jalankan command di bawah.
 
@@ -221,7 +228,7 @@ $ rails new my-faq-bot --force --api --skip-action-mailbox --skip-action-mailer 
 Command ini akan membuatkanmu satu folder baru dengan nama `my-faq-bot` yang berisikan
 template proyek untuk aplikasi REST API.
 
-**2. Menyiapkan database PostgreSQL**
+#### Menyiapkan database PostgreSQL
 
 Masuk ke direktori proyekmu, lalu buat file baru dengan nama `docker-compose.yml` dengan isi seperti berikut:
 
@@ -261,7 +268,7 @@ $ docker-compose up -d
 
 Command di atas akan menjalankan satu container PostgreSQL yang akan kita gunakan sebagai database.
 
-**3. Menjalankan web server**
+#### Menjalankan web server
 
 Masuk ke direktori proyekmu, buka terminal/cmd, lalu jalankan perintah berikut:
 
@@ -274,7 +281,7 @@ Selanjutnya buka `http://localhost:3000` di browsermu dan pastikan kamu melihat 
 
 ### Membuat webhook 🕸
 
-**1. Menambahkan `/webhook` ke route**
+#### Menambahkan `/webhook` ke route
 
 Masuk ke direktori proyekmu, lalu tambahkan resource `webhook` di `config/routes.rb`.
 
@@ -302,7 +309,7 @@ Dari contoh hasilnya seperti di atas, maka:
 
 - jika ada request `POST /webhook` seharusnya akan di-route ke `WebhooksController` pada fungsi `#create`.
 
-**2. Membuat `GET /webhook` untuk verifikasi token**
+#### Membuat `GET /webhook` untuk verifikasi token
 
 Masuk ke direktori proyekmu, lalu buat file baru `webhooks_controller.rb` di `app/controllers/`.
 
@@ -326,7 +333,7 @@ class WebhooksController < ApplicationController
 end
 ```
 
-**3. Membuat `POST /webhook` untuk menerima event**
+#### Membuat `POST /webhook` untuk menerima event
 
 Masuk ke direktori proyekmu, lalu tambahkan fungsi `#create` di `WebhooksController`.
 
@@ -353,10 +360,11 @@ class WebhooksController < ApplicationController
 end
 ```
 
-**4. Memeriksa webhook**
+#### Memeriksa webhook
 
-Untuk memeriksa apakah webhook kita sudah berhasil, buka terminal/cmd, lalu jalankan web server,
-kemudian jalankan perintah berikut:
+Untuk memeriksa apakah webhook kita sudah berhasil, buka terminal/cmd,
+lalu [jalankan web server](#menjalankan-web-server),
+kemudian jalankan perintah berikut untuk verifikasi token:
 
 ```console
 $ curl -X GET "localhost:3000/webhook?hub.verify_token=foo&hub.challenge=CHALLENGE_ACCEPTED&hub.mode=subscribe"
@@ -367,6 +375,8 @@ Kita bisa tahu webhook kita sukses adalah dengan melihat:
 - Jika isi dari parameter query `hub.verify_token` sama dengan token yang sudah kita tentukan di atas,
 maka ekspektasinya webhook harus mengembalikan isi
 dari parameter query `hub.challenge` dan statusnya `200 ok`.
+
+Untuk event di webhook, jalankan perintah berikut:
 
 ```console
 $ curl -H "Content-Type: application/json" -X POST "localhost:3000/webhook" -d '{"object": "page", "entry": [{"messaging": [{"message": "TEST_MESSAGE"}]}]}'
