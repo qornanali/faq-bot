@@ -6,19 +6,19 @@
 
 ### Mengapa kita butuh bot ini? 🤔
 
-Ketika kita membuat suatu produk, kita ingin agar pengguna atau konsumen kita
+Ketika kita membuat suatu produk, kita ingin agar pengguna atau customer kita
 dapat menggunakannya sesuai dengan yang kita harapkan. Akan tetapi,
 seiring dengan berkembangnya produk tersebut, makin banyak
-informasi yang tersebar dimana-mana dan membuat konsumen kita kehilangan arah.
+informasi yang tersebar dimana-mana dan membuat customer kita kehilangan arah.
 
 Untuk menyelesaikan itu, disusunlah FAQ. FAQ merupakan singkatan dari
 frequently asked question, sebuah list yang berisi pertanyaan-pertanyaan
-yang sering diajukan oleh konsumen ataupun pengguna mengenai sebuah topik, beserta jawabannya.
+yang sering diajukan oleh customer ataupun pengguna mengenai sebuah topik, beserta jawabannya.
 
 Untuk meningkatkan kualitas FAQ, kita sebagai produk perlu menjawab hal berikut:
 
-- Apakah jawaban yg diberikan kepada konsumen sesuai?
-- Pertanyaan-pertanyaan apa lagi yang sering ditanyakan konsumen?
+- Apakah jawaban yg diberikan kepada customer sesuai?
+- Pertanyaan-pertanyaan apa lagi yang sering ditanyakan customer?
 
 ### Lalu apa solusinya? 🙋‍♂️
 
@@ -30,7 +30,7 @@ Oleh karena itu kita bisa mengintegrasikan obrolan di bot ini dengan wit.ai
 agar di setiap obrolannya, kita bisa mencerna "maksud" dari customer.
 
 Dengan memanfaatkan fitur-fitur tersebut, kita akan membuat suatu bot di messenger
-yang dapat mencerna maksud dari pertanyaan yang ditanyakan oleh konsumen.
+yang dapat mencerna maksud dari pertanyaan yang ditanyakan oleh customer.
 Kemudian maksud ini kita olah untuk dapat memberikan jawaban yang sesuai.
 
 ## Daftar Isi
@@ -44,7 +44,7 @@ Kemudian maksud ini kita olah untuk dapat memberikan jawaban yang sesuai.
   + [Mencari tahu teknologi yang dibutuhkan 💻](#mencari-tahu-teknologi-yang-dibutuhkan---)
     - [Membuat messenger app](#membuat-messenger-app)
     - [Melatih AI agar dapat memahami pembicaraan](#melatih-ai-agar-dapat-memahami-pembicaraan)
-  + [Kesimpulan](#kesimpulan)
+  + [Kesimpulan 📝](#kesimpulan---)
     - [Facebook melakukan verifikasi webhook](#facebook-melakukan-verifikasi-webhook)
     - [Aplikasi menerima pertanyaan dari customer](#aplikasi-menerima-pertanyaan-dari-customer)
     - [Aplikasi mengirim jawaban ke customer](#aplikasi-mengirim-jawaban-ke-customer)
@@ -59,9 +59,14 @@ Kemudian maksud ini kita olah untuk dapat memberikan jawaban yang sesuai.
     - [Membuat `GET /webhook` untuk verifikasi token](#membuat--get--webhook--untuk-verifikasi-token)
     - [Membuat `POST /webhook` untuk menerima event](#membuat--post--webhook--untuk-menerima-event)
     - [Memeriksa webhook](#memeriksa-webhook)
+    - [Mencoba webhook di Facebook app](#mencoba-webhook-di-facebook-app)
+  + [Membalas pesan ke customer 💬](#membalas-pesan-ke-customer---)
+    - [Tambahkan gem Faraday](#tambahkan-gem-faraday)
+    - [Modifikasi fungsi create](#modifikasi-fungsi-create)
 * [Referensi](#referensi)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 ## Menganalisa aplikasi yang akan kita buat
 
@@ -102,7 +107,7 @@ lalu kita tentukan dari setiap sampel pertanyaan tersebut, apa "maksud" dari cus
 Untuk memahami caranya, kita bisa langsung masuk ke tutorial singkat
 dari wit.ai di link berikut https://wit.ai/docs/quickstart.
 
-### Kesimpulan
+### Kesimpulan 📝
 
 Setelah melakukan spike-spike di atas, berikut ini adalah diagram dari spesifikasi
 teknologi yang akan kita gunakan. Diagram ini dibuat sesimpel mungkin jadi mungkin
@@ -208,7 +213,7 @@ Kamu bisa membuat akun baru dengan membuka link berikut: https://developers.face
 
 6. Akun wit.ai
 
-Akun ini diperlukan untuk membuat model NLP[[1]], yang digunakan untuk mencerna maksud pertanyaan dari konsumen.
+Akun ini diperlukan untuk membuat model NLP[[1]], yang digunakan untuk mencerna maksud pertanyaan dari customer.
 Kamu bisa membuat akun baru dengan membuka link berikut: https://wit.ai.
 
 7. Akun ngrok
@@ -381,6 +386,8 @@ Kita bisa tahu webhook kita sukses adalah dengan melihat:
 maka ekspektasinya webhook harus mengembalikan isi
 dari parameter query `hub.challenge` dan statusnya `200 ok`.
 
+- Ada pesan `WEBHOOK_VERIFIED` yang tampil di console.
+
 Untuk event di webhook, jalankan perintah berikut:
 
 ```console
@@ -393,6 +400,140 @@ Kita bisa tahu webhook kita sukses adalah dengan melihat:
 harus mengembalikan `EVENT_RECEIVED` dan statusnya `200 ok`.
 
 - Ada pesan `TEST_MESSAGE` yang tampil di console.
+
+#### Mencoba webhook di Facebook app
+
+Seperti yang sudah dijabarkan di [kesimpulan](#kesimpulan), ada beberapa kebutuhan yang perlu
+dipenuhi agar webhook kita bisa disimpan di konfigurasi aplikasi. Untuk sementara ini karena
+kita masih dalam tahap pengembangan, kita bisa menggunakan software bernama ngrok.
+Langkah-langkanya:
+
+**1. Ubah konfigurasi aplikasi**
+
+Masuk ke direktori proyekmu, lalu perbolehkan hostname ngrok di `config/environments/development.rb`
+dengan cara menambahkan `config.hosts << /[a-z0-9]+\.ngrok\.io/` seperti di bawah:
+
+```ruby
+# <root_project_directory>/config/environments/development.rb
+
+Rails.application.configure do
+  # configs ..
+
+  config.hosts << /[a-z0-9]+\.ngrok\.io/
+end
+```
+
+**2. Jalankan web server**
+
+Lakukan seperti [tahap ini](#menjalankan-web-server).
+
+**3. Jalankan ngrok**
+
+Buka tab baru di terminal/cmd, lalu jalankan perintah:
+
+```console
+$ ngrok http 3000
+```
+
+Contoh keluaran:
+
+![ngrok screenshot](../assets/ngrok-ss.png)
+
+Ambil https url dari baris `Forwarding` misalnya `https://fe01d05e31bc.ngrok.io`
+
+**4. Simpan webhook url di konfigurasi facebook app**
+
+Jika kamu mengikuti [bagian ini](#membuat-messenger-app), maka kamu seharusnya sudah memiliki
+akun developer Facebook dan pernah membuat aplikasi Facebook. Langkah selanjutnya adalah:
+
+1. Buka laman pengaturan dari aplikasi Facebook yang pernah kamu buat.
+
+2. Masuk ke bagian `messenger > settings > webhooks`
+
+![Tambahkan host ngrok ke pengaturan](../assets/add-ngrok-to-config.gif)
+
+Tambahkan host dan verifikasi token sesuai dengan form di gambar. Contohnya, url webhook adalah `https://fe01d05e31bc.ngrok.io/webhook` dan verifikasi tokennya adalah `foo`.
+
+3. Hubungkan bot dengan page Facebook
+
+![hubungkan page facebook](../assets/add-page-webhook-ss.png)
+
+![hubungkan page facebook](../assets/edit-page-subscription-ss.png)
+
+Tambahkan `messages` dan `messaging_postback` sebagai pengaturan subscription.
+
+4. Periksa apakah konfigurasi sudah benar seperti di [bagian ini](#memeriksa-webhook)
+dengan mengirimkan pesan ke page Facebook yang sudah kamu pilih.
+
+### Membalas pesan ke customer 💬
+
+#### Tambahkan gem Faraday
+
+Faraday adalah salah satu gem yang berfungsi sebagai HTTP client.
+Masuk ke direktori proyekmu, lalu tambahkan Faraday `Gemfile`:
+
+```ruby
+# <root_project_directory>/Gemfile
+
+gem 'faraday'
+```
+
+Buka terminal/cmd, lalu jalankan perintah:
+
+```console
+$ bundle install
+```
+
+#### Modifikasi fungsi create
+
+Masuk ke direktori proyekmu, lalu modifikasi fungsi `#create` di `WebhooksController`.
+
+```ruby
+# <root_project_directory>/app/controllers/webhooks_controller.rb
+
+class WebhooksController < ApplicationController
+  # show ..
+
+  def create
+    webhook_data = params['webhook'].as_json
+    if webhook_data['object'] != 'page'
+      render json: 'FAILED', status: 404
+      return
+    end
+
+    entries = webhook_data['entry']
+    entries.each do |entry|
+      messaging = entry['messaging'].first
+      message = messaging['message']
+      sender_id = messaging['sender']['id']
+      text_for_answer = message['text']
+      send_message(sender_id, text_for_answer)
+    end
+    render json: 'EVENT_RECEIVED', status: 200
+  end
+
+  private
+
+    def send_message(recipient_id, text)
+      access_token = '<put your page access token>' # Be careful with this token. Don't share it to others unless you trust them.
+      request_url = URI("https://graph.facebook.com/v2.6/me/messages?access_token=#{access_token}")
+      request_body = {
+        recipient: {
+          id: recipient_id
+        },
+        message: {
+          text: text
+        }
+      }.to_json
+
+      resp = Faraday.post(request_url, request_body, "Content-Type" => "application/json")
+    end
+end
+```
+
+Setelah itu kamu bisa mencobanya dengan mengirimkan pesan ke Facebook pagemu.
+Jangan lupa untuk memastikan [bagian ini](#mencoba-webhook-di-facebook-app) sudah kamu lakukan
+dan web server sedang berjalan.
 
 ## Referensi
 
