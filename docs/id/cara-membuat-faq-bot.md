@@ -1,7 +1,5 @@
 # 🇮🇩 Cara membuat asisten pintar `FAQ-bot` untuk menjawab pertanyaan
 
-![Demo](../assets/faq-bot-demo-resized.gif)
-
 ## Pengantar 
 
 ### Mengapa kita butuh bot ini? 🤔
@@ -64,7 +62,17 @@ Kemudian maksud ini kita olah untuk dapat memberikan jawaban yang sesuai.
     - [Mendapatkan akses token dari Facebook page](#mendapatkan-akses-token-dari-facebook-page)
     - [Tambahkan gem Faraday](#tambahkan-gem-faraday)
     - [Modifikasi fungsi create](#modifikasi-fungsi-create)
-* [Referensi](#referensi)
+  + [Mengintegrasikan percakapan dengan AI 🤖](#mengintegrasikan-percakapan-dengan-ai---)
+    - [Melatih pemahaman AI pada percakapan](#melatih-pemahaman-ai-pada-percakapan)
+    - [Mengubah pengaturan aplikasi di Facebook](#mengubah-pengaturan-aplikasi-di-facebook)
+    - [Modifikasi fungsi create](#modifikasi-fungsi-create-1)
+  + [Mengirimkan jawaban berdasarkan database](#mengirimkan-jawaban-berdasarkan-database)
+    - [Merubah skema database](#merubah-skema-database)
+    - [Membuat model Answer](#membuat-model-answer)
+    - [Modifikasi fungsi private text_for_answer](#modifikasi-fungsi-private-text-for-answer)
+* [Penutup](#penutup)
+  + [Apa selanjutnya?](#apa-selanjutnya-)
+  + [Referensi](#referensi)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -157,7 +165,7 @@ atau [rvm](https://rvm.io/rvm/install#try-out-your-new-rvm-installation),
 untuk menginstall versi dari ruby yang dibutuhkan.
 
 Untuk memeriksa apakah perangkatmu sudah terinstall ruby, kamu bisa menjalankan
-perintah berikut di terminal/command prompt:
+perintah berikut di terminal/Perintah prompt:
 
 ```console
 $ ruby -v
@@ -175,7 +183,7 @@ $ gem install bundler -v 2.0.2
 ```
 
 Untuk memeriksa apakah perangkatmu sudah terinstall bundler, kamu bisa menjalankan
-perintah berikut di terminal/command prompt:
+perintah berikut di terminal/Perintah prompt:
 
 ```console
 $ bundler -v
@@ -193,7 +201,7 @@ $ gem install rails -v 6
 ```
 
 Untuk memeriksa apakah perangkatmu sudah terinstall rails, kamu bisa menjalankan
-perintah berikut di terminal/command prompt:
+perintah berikut di terminal/Perintah prompt:
 
 ```console
 $ rails -v
@@ -229,13 +237,13 @@ panduan setup-nya di https://dashboard.ngrok.com/get-started/setup.
 
 #### Membuat proyek baru rails
 
-Buka terminal/cmd, masuk ke direktori yang kamu inginkan lalu jalankan command di bawah.
+Buka terminal/cmd, masuk ke direktori yang kamu inginkan lalu jalankan Perintah di bawah.
 
 ```console
 $ rails new my-faq-bot --force --api --skip-action-mailbox --skip-action-mailer --skip-active-storage --skip-system-test --skip-action-text --skip-javascript --skip-spring --skip-action-cable --no-skip-active-record --database=postgresql
 ```
 
-Command ini akan membuatkanmu satu folder baru dengan nama `my-faq-bot` yang berisikan
+Perintah ini akan membuatkanmu satu folder baru dengan nama `my-faq-bot` yang berisikan
 template proyek untuk aplikasi REST API.
 
 #### Menyiapkan database PostgreSQL
@@ -276,7 +284,7 @@ Buka terminal/cmd, lalu jalankan perintah berikut:
 $ docker-compose up -d
 ```
 
-Command di atas akan menjalankan satu container PostgreSQL yang akan kita gunakan sebagai database.
+Perintah di atas akan menjalankan satu container PostgreSQL yang akan kita gunakan sebagai database.
 
 #### Menjalankan web server
 
@@ -286,7 +294,7 @@ Masuk ke direktori proyekmu, buka terminal/cmd, lalu jalankan perintah berikut:
 $ bin/rails server -port 3000
 ```
 
-Command di atas akan menjalankan proyekmu sebagai webserver di port 3000. 
+Perintah di atas akan menjalankan proyekmu sebagai webserver di port 3000. 
 Selanjutnya buka `http://localhost:3000` di browsermu dan pastikan kamu melihat halaman: "Yay! You’re on Rails!"
 
 ### Membuat webhook 🕸
@@ -547,7 +555,219 @@ Setelah itu kamu bisa mencobanya dengan mengirimkan pesan ke Facebook pagemu.
 Jangan lupa untuk memastikan [bagian ini](#mencoba-webhook-di-facebook-app) sudah kamu lakukan
 dan web server sedang berjalan.
 
-## Referensi
+### Mengintegrasikan percakapan dengan AI 🤖
+
+#### Melatih pemahaman AI pada percakapan
+
+Untuk dapat mencerna "maksud" dari pertanyaan customer, kita bisa melatih aplikasi kita agar
+dapat mengekstrak "maksud" dari kalimat tersebut berdasarkan seberapa tinggi tingkat kebenarannya.
+
+Jika sebelumnya kamu pernah melakukan [bagian ini](#melatih-ai-agar-dapat-memahami-pembicaraan),
+maka seharusnya tidak jauh berbeda caranya.
+Pertama-tama, kita buat aplikasi di wit.ai. Lalu masuk ke halaman understanding.
+
+![melatih wit.ai](../assets/train-wit-ai.gif)
+
+Kemudian masukkan utterances, pilih entity dan intentnya. Semakin banyak sample utterance yang
+dipakai untuk proses latihan ini, maka kualitas dari tingkat kebenarannya akan semakin baik.
+
+#### Mengubah pengaturan aplikasi di Facebook
+
+1. Ambil access token dari akun wit.ai
+
+![mendapatkan access token dari wit.ai](../assets/get-access-token-from-wit-ai.png)
+
+> :warning: Berhati-hatilah dengan token ini. Jangan bagikan ke siapapun kecuali kamu mempercayainya.
+
+2. Buka laman pengaturan dari aplikasi Facebook yang pernah kamu buat.
+
+3. Masuk ke bagian `messenger > settings > Built-In NLP`
+
+4. Pilih `Other Language Support`, kemudian pilih `English`, lalu pilih `Custom`.
+Kemudian masukkan access token yang kita dapatkan dari wit.ai
+
+![Masukkan access token pada Built-In NLP messenger](../assets/set-wit-ai-token-on-messenger.png)
+
+#### Modifikasi fungsi create
+
+Masuk ke direktori proyekmu, lalu modifikasi fungsi `#create` di `WebhooksController`.
+
+```ruby
+# <root_project_directory>/app/controllers/webhooks_controller.rb
+
+class WebhooksController < ApplicationController
+  # show ..
+
+  def create
+    webhook_data = params['webhook'].as_json
+    if webhook_data['object'] != 'page'
+      render json: 'FAILED', status: 404
+      return
+    end
+
+    entries = webhook_data['entry']
+    entries.each do |entry|
+      messaging = entry['messaging'].first
+      message = messaging['message']
+      sender_id = messaging['sender']['id']
+      send_message(sender_id, text_for_answer(message))
+    end
+    render json: 'EVENT_RECEIVED', status: 200
+  end
+
+  private
+
+    # send_message ...
+
+    def text_for_answer(message)
+      selected_intents = message['nlp']['intents'].select { |item| item['confidence'].to_f > 0.5 }
+      sorted_intents = selected_intents.sort_by { |item| -item['confidence'].to_f }
+      intent = sorted_intents.first['name'] unless sorted_intents.empty?
+      return 'You can put anyname on Facebook' if intent == 'allowed_name'
+
+      message['text']
+    end
+end
+```
+
+Setelah itu kamu bisa mencobanya dengan mengirimkan pesan ke Facebook pagemu.
+Jangan lupa untuk memastikan [bagian ini](#mencoba-webhook-di-facebook-app) sudah kamu lakukan
+dan web server sedang berjalan.
+
+### Mengirimkan jawaban berdasarkan database
+
+#### Merubah skema database
+
+Buka terminal/cmd, masuk ke direktori yang kamu inginkan lalu jalankan Perintah di bawah.
+
+```console
+$ bin/rails generate migration CreateAnswers
+
+# invoke  active_record
+# create  db/migrate/20201025103252_create_answers.rb
+```
+
+Perintah ini akan menghasilkan file baru berisikan template script untuk mengubah skema pada database.
+
+Selanjutnya masuk ke file baru yang telah digenerate tersebut misalnya `db/migrate/20201025103252_create_answers.rb`.
+Kemudian tambahkan isinya menjadi seperti berikut:
+
+```ruby
+# <root_project_directory>/db/migrate/20201025103252_create_answers.rb
+
+class CreateAnswers < ActiveRecord::Migration[6.0]
+  def change
+    create_table :answers do |t|
+      t.string :question_type, null: false
+      t.string :text, null: false
+
+      t.timestamps
+    end
+
+    add_index :answers, :question_type, unique: true
+  end
+end
+```
+
+Isi dari script ini adalah, kita akan menambahkan tabel baru bernama `answers` yang memiliki
+kolom `question_type` dengan tipe `string`, dan `text` dengan tipe `string`.
+
+Kembali ke terminal/cmd, jalankan perintah:
+
+```console
+$ docker-compose up -d
+$ bin/rails db:migrate
+```
+
+Perintah ini akan menjalankan container berisikan PostgreSQL yang telah kita persiapkan
+di [bagian ini](#menyiapkan-database-postgresql). Selanjutnya, kita mengeksekusi script migration
+untuk menerapkan skema database baru yang telah kita rancang.
+
+#### Membuat model Answer
+
+Masuk ke direktori proyekmu, lalu buat file baru `answer.rb` di `app/models/`.
+
+```ruby
+# <root_project_directory>/app/models/answer.rb
+
+class Answer < ApplicationRecord
+  validates :question_type, uniqueness: true
+end
+```
+
+**Menambahkan record pada table answers**
+
+Buka terminal/cmd, masuk ke direktori yang kamu inginkan lalu jalankan Perintah di bawah.
+
+```console
+$ bin/rails console
+
+irb(main):001:0> Answer.create(question_type: 'allowed_name', text: 'You can put anyname on Facebook')
+```
+
+#### Modifikasi fungsi private text_for_answer
+
+Masuk ke direktori proyekmu, lalu modifikasi fungsi private `#text_for_answer` di `WebhooksController`.
+
+```ruby
+# <root_project_directory>/app/controllers/webhooks_controller.rb
+
+class WebhooksController < ApplicationController
+  # show ..
+
+  # create ..
+
+  private
+
+    # send_message ...
+
+    def text_for_answer(message)
+      selected_intents = message['nlp']['intents'].select { |item| item['confidence'].to_f > 0.5 }
+      sorted_intents = selected_intents.sort_by { |item| -item['confidence'].to_f }
+      intent = sorted_intents.first['name'] unless sorted_intents.empty?
+      answer = Answer.find_by_question_type(intent)
+      return answer.text if answer.present?
+
+      message['text']
+    end
+end
+```
+
+Setelah itu kamu bisa mencobanya dengan mengirimkan pesan ke Facebook pagemu.
+Jangan lupa untuk memastikan [bagian ini](#mencoba-webhook-di-facebook-app) sudah kamu lakukan
+dan web server sedang berjalan.
+
+## Penutup
+
+![Demo](../assets/faq-bot-demo-resized.gif)
+
+Selamat! teman-teman sudah berhasil membuat FAQ-bot menggunakan messenger dan wit.ai.
+Di tulisan kali ini kita sudah belajar banyak hal seperti persiapan
+sebelum pengembangan, bagaimana cara membuat messenger app, bagaimana cara kerja NLP, dll.
+Semoga apa yang sudah dipelajari dapat bermanfaat dan
+bisa dikembangkan menjadi hal yang lebih keren lagi! 😁
+
+Kode seluruh proyek ini dapat diakses di https://github.com/qornanali/faq-bot.
+
+### Apa selanjutnya?
+
+Tentu aplikasi ini belum sempurna. Ke depannya kamu bisa menambahkan:
+
+1. Karena ngrok memiliki keterbatasan dan sifatnya sementara untuk proses development,
+oleh karena kita perlu deploy aplikasi di server pilihanmu agar aplikasinya selalu melayani
+pertanyaan customer. Kamu bisa menggunakan Heroku, Azure, AWS, dll.
+
+2. Saat ini untuk menambahkan record di table answers, kita masih menggunakan rails console.
+Jika kita menyediakan API CRUD (create, read, update, delete) yang bisa dikonsumsi internal,
+maka prosesnya akan lebih mudah.
+
+*Apakah ada yang lainnya?*
+
+Tentu saja. Kamu bisa berkontribusi ke repository ini dengan
+mengikuti [issues](https://github.com/qornanali/faq-bot/issues) di repository ini.
+Kontribusi dalam bentuk apapun akan diterima! 😁
+
+### Referensi
 
 - https://developers.facebook.com/docs/messenger-platform
 
