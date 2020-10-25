@@ -15,7 +15,7 @@ class WebhooksController < ApplicationController
   def create
     webhook_data = params['webhook'].as_json
     if webhook_data['object'] != 'page'
-      render json: 'FAILED', status: 400
+      render json: 'FAILED', status: 404
       return
     end
 
