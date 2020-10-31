@@ -717,7 +717,7 @@ In this tutorial, we have learned many things such as
 preparation, how to make messenger app, how did NLP works, etc.
 Hopefully what we have learned can be really useful and you can develop into even cooler things 😁
 
-You can access this project source code on : https://github.com/qornanali/faq-bot.
+You can access this project source code on : https://github.com/qornanali/faq-bot/blob/master/docs/source_code_example.
 
 ### What's next?
 

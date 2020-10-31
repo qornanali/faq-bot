@@ -747,7 +747,7 @@ sebelum pengembangan, bagaimana cara membuat messenger app, bagaimana cara kerja
 Semoga apa yang sudah dipelajari dapat bermanfaat dan
 bisa dikembangkan menjadi hal yang lebih keren lagi! 😁
 
-Kode seluruh proyek ini dapat diakses di https://github.com/qornanali/faq-bot.
+Kode seluruh proyek ini dapat diakses di https://github.com/qornanali/faq-bot/blob/master/docs/source_code_example.
 
 ### Apa selanjutnya?
 
