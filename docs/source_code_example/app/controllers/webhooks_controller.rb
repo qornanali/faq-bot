@@ -32,7 +32,7 @@ class WebhooksController < ApplicationController
   private
 
     def send_message(recipient_id, text)
-      access_token = 'EAAFQYRMAXQQBANIEqVr8hWQWElPvr0VvPxryTkNGULcLnXrynrt2qwjOovFsCOp53VI2mWN6BPO7pEJisKfFJNGn38qjteAjmzoAxUVSubtQAuWcjU7fSxG60dchutpn4HvwSbi05OM5e9EaFUNhHxNogknWTMmjfLdARZCYhSdcpDT1AEbKHb2vNQEMZD' ## Be careful with this token. Don't share it to others unless you trust them.
+      access_token = '<page access token here e.g EAAFQYRMAXQQBANIEqVr8h...>' ## Be careful with this token. Don't share it to others unless you trust them.
       request_url = URI("https://graph.facebook.com/v2.6/me/messages?access_token=#{access_token}")
       request_body = {
         recipient: {
