@@ -351,6 +351,16 @@ class WebhooksController < ApplicationController
 end
 ```
 
+Isi dari fungsi `#show` di class `WebhooksController` adalah:
+
+1. Membaca `mode`, `token`, dan `challenge` dari query parameters.
+
+2. Periksa apakah mode dan token sudah sesuai.
+
+3. Jika sesuai, tampilkan isi dari `challenge` dengan http status `200` ok.
+
+4. Jika tidak sesuai, tampilkan `"FAILED"` dengan http status `403` forbidden.
+
 #### Membuat `POST /webhook` untuk menerima event
 
 Masuk ke direktori proyekmu, lalu tambahkan fungsi `#create` di `WebhooksController`.
@@ -377,6 +387,16 @@ class WebhooksController < ApplicationController
   end
 end
 ```
+
+Isi dari fungsi `#create` di class `WebhooksController` adalah:
+
+1. Membaca `webhook_data` dari request body yang masuk dalam bentuk json.
+
+2. Memeriksa apakah object sudah sesuai atau tidak.
+
+3. Jika sesuai, ambil isi pesan yang dikirimkan lalu tampilkan `"EVENT_RECEIVED"` dengan http status `200` ok.
+
+4. Jika tidak sesuai, tampilkan `"FAILED"` dengan http status `404` not found.
 
 #### Memeriksa webhook
 
@@ -551,6 +571,14 @@ class WebhooksController < ApplicationController
 end
 ```
 
+Isi dari modifikasi fungsi `#create` di class `WebhooksController` adalah:
+
+1. Ambil isi dari pesan yang dikirimkan dan id pengirimnya.
+
+2. Buat `POST` request ke Facebook graph API untuk mengirimkan pesan dengan atas nama page yang
+kita pilih. Isi dari requestnya adalah id penerima dan teks yang isinya berupa pesan
+yang akan kita kirimkan sebagai balasan untuk customer.
+
 Setelah itu kamu bisa mencobanya dengan mengirimkan pesan ke Facebook pagemu.
 Jangan lupa untuk memastikan [bagian ini](#mencoba-webhook-di-facebook-app) sudah kamu lakukan
 dan web server sedang berjalan.
@@ -629,6 +657,22 @@ class WebhooksController < ApplicationController
     end
 end
 ```
+
+Isi dari modifikasi fungsi `#create` di class `WebhooksController` adalah:
+
+1. Ada tambahan fungsi private baru bernama `#text_for_answer`. Isi dari method ini
+adalah mengambil hasil analisa NLP yang diberikan oleh wit.ai.
+
+2. Urutkan analisa itu berdasarkan tingkat kebenaran paling tinggi dan tidak lupa juga
+filter dengan threshold misalnya `0.5`
+
+3. Ambil isi dari intent yang didapat, jika intent adalah `allowed_name`, maka
+kembalikan teks `"You can put anyname on Facebook"`.
+
+4. Jika intent bukan yang dimaksud, maka kembalikan teks sesuai dengan pesan yang dikirimkan pengirim.
+
+5. Teks yang dikembalikan di atas digunakan di `POST` request sebagai isi dari pesan
+yang akan kita kirimkan sebagai balasan untuk customer.
 
 Setelah itu kamu bisa mencobanya dengan mengirimkan pesan ke Facebook pagemu.
 Jangan lupa untuk memastikan [bagian ini](#mencoba-webhook-di-facebook-app) sudah kamu lakukan
@@ -732,6 +776,16 @@ class WebhooksController < ApplicationController
     end
 end
 ```
+
+Isi dari modifikasi fungsi `#text_for_answer` di class `WebhooksController` adalah:
+
+1. Jika sebelumnya kita melakukan hardcode terhadap teks yang akan digunakan
+sebagai balasan ke customer, sekarang kita melakukan query ke database melalui
+model `Answer`.
+
+2. Lalu kita ambil isi dari field `text` yang kita dapat dari hasil query.
+
+3. Gunakan teks tersebut sebagai teks dari pesan yang akan menjadi balasan untuk customer.
 
 Setelah itu kamu bisa mencobanya dengan mengirimkan pesan ke Facebook pagemu.
 Jangan lupa untuk memastikan [bagian ini](#mencoba-webhook-di-facebook-app) sudah kamu lakukan

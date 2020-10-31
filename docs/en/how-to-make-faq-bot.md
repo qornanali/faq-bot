@@ -328,6 +328,16 @@ class WebhooksController < ApplicationController
 end
 ```
 
+The contents of the `#show` function in the` WebhooksController` class are:
+
+1. Read the `mode`,` token`, and `challenge` of the query parameters.
+
+2. Check if the mode and token are suitable.
+
+3. If suitable, display the value of `challenge` with http status `200` ok.
+
+4. If it doesn't match, display `"FAILED"` with http status `403` forbidden.
+
 #### Creating `POST /webhook` to receives event
 
 Get into your project directory, then add a function `#create` in `WebhooksController`.
@@ -354,6 +364,16 @@ class WebhooksController < ApplicationController
   end
 end
 ```
+
+The contents of the `#create` function in the` WebhooksController` class are:
+
+1. Read the `webhook_data` from the request body which is entered in json form.
+
+2. Check whether the object is suitable or not.
+
+3. If suitable, retrieve the value of the message sent then display `"EVENT_RECEIVED"` with http status `200` ok.
+
+4. If it doesn't match, display `"FAILED"` with http status `404` not found.
 
 #### Checking the webhook
 
@@ -526,6 +546,14 @@ class WebhooksController < ApplicationController
 end
 ```
 
+The contents of the modified `#create` function in the `WebhooksController` class are:
+
+1. Retrieve the contents of the message sent and the sender id.
+
+2. Make a `POST` request to the Facebook graph API to send a message on behalf of that page
+we choose. The contents of the request are the recipient id and the text which contains a message
+which we will send as a reply to the customer.
+
 After that, you can test by sending message to your facebook page.
 Don't forget to make sure you have done [this section](#testing-webhook-in-facebook-app) and web server is already running.
 
@@ -602,6 +630,21 @@ class WebhooksController < ApplicationController
     end
 end
 ```
+
+The contents of the modified `#create` function in the` WebhooksController` class are:
+
+1. There is a new private function called `#text_for_answer`. The contents of this method is to take the results of the NLP analysis provided by wit.ai.
+
+2. Sort the analysis based on the highest level of truth and do not forget
+filter with a threshold such as `0.5`
+
+3. Get the contents of the obtained intent, if the intent is ʻallowed_name`, then
+return the text `"You can put anyname on Facebook"`.
+
+4. If the intent is not what is intended, then return the text according to the message sent by the sender.
+
+5. The text returned above is used in the `POST` request as the body of the message
+which we will send as a reply to the customer.
 
 After that, you can test by sending message to your facebook page.
 Don't forget to make sure you have done [this section](#testing-webhook-in-facebook-app) and web server is already running.
@@ -703,6 +746,15 @@ class WebhooksController < ApplicationController
     end
 end
 ```
+
+The contents of the modified `#text_for_answer` function in the `WebhooksController` class are:
+
+1. If previously we hardcode the text to be used in return to the customer,
+we now perform a query to the database via `Answer` model.
+
+2. Then we take the contents of the `text` field which we get from the query results.
+
+3. Use the text as the text of the message that will be the reply to the customer.
 
 After that you can test by sending message to your facebook page.
 Don't forget to make sure you have done in [this section](#testing-webhook-in-facebook-app) 
